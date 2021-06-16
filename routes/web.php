@@ -25,7 +25,9 @@ Route::prefix('admin')
     ->middleware('auth')
     ->name('admin.')
     ->group(function () {
+        // Route for home
         Route::get('/', 'HomeController@index')->name('home');
 
+        // Route fore CRUD
         Route::resource('/posts', 'PostController');
     });
