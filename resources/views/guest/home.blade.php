@@ -8,8 +8,9 @@
 
     </head>
     <body>
-        <div>
-            <h1>WORK IN PROGRESS</h1>
-        </div>
+        <div id="root"></div>
+
+        {{-- JS --}}
+        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
