@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Post;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -18,8 +19,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        $categories = Category::all();
 
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -29,7 +31,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -41,14 +45,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // VALIDAZIONE
-        $request->validate([
-            'title' => 'required|unique:posts|max:255',
-            'content' => 'required',
-        ], [
-            'required' => 'The :attribute is required!!',
-            'unique' => 'The :attribute is already in use for another post.',
-            'max' => 'Max :max characters allowed for the :attribute.'
-        ]);
+        $this->performValidation($request);
 
         $data = $request->all();
 
@@ -57,7 +54,7 @@ class PostController extends Controller
 
         // create and save record on db
         $new_post = new Post();
-        $new_post->fill($data); // <-- FILLABLE !!
+        $new_post->fill($data);
         $new_post->save();
 
         return redirect()->route('admin.posts.show', $new_post->id);
@@ -87,11 +84,13 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $categories = Category::all();
+
         if (! $post) {
             abort(404);
         }
 
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -111,6 +110,7 @@ class PostController extends Controller
                 'max:255',
             ],
             'content' => 'required',
+            'category_id' => 'nullable|exists:categories,id'
         ], [
             'required' => 'The :attribute is required!!',
             'unique' => 'The :attribute is already in use for another post.',
@@ -142,5 +142,22 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('deleted', $post->title);
+    }
+
+
+    /**
+     * UTILITIES
+     */
+    private function performValidation($request)
+    {
+        $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'content' => 'required',
+            'category_id' => 'nullable|exists:categories,id'
+        ], [
+            'required' => 'The :attribute is required!',
+            'unique' => 'The :attribute is already in use, please change it!',
+            'max' => 'Max :max characters allowed for the :attribute!'
+        ]);
     }
 }
