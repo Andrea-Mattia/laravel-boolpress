@@ -15,8 +15,19 @@
             @endif
         </div>
 
-        <div>
+        <div class="mb-5">
             {{ $post->content }}
         </div>
+
+        {{-- POST TAGS --}}
+        @if (count($post->tags) > 0)
+            <h4 class="mb-3">Tags</h4>
+            <ul class="list-inline">
+                @foreach ($post->tags as $tag)
+                    <li class="list-inline-item alert alert-info">{{ $tag->name }}</li>
+                @endforeach
+            </ul>
+        @endif
+
     </div>
 @endsection

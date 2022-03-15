@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -20,8 +21,9 @@ class PostController extends Controller
     {
         $posts = Post::all();
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.index', compact('posts', 'categories'));
+        return view('admin.posts.index', compact('posts', 'categories', 'tags'));
     }
 
     /**
@@ -32,8 +34,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -56,6 +59,12 @@ class PostController extends Controller
         $new_post = new Post();
         $new_post->fill($data);
         $new_post->save();
+
+        // SALVA RELAZIONE CON TAGS IN TABELLA PIVOT
+        if (array_key_exists('tags', $data)) {
+            // post - tag
+            $new_post->tags()->attach($data['tags']);
+        }
 
         return redirect()->route('admin.posts.show', $new_post->id);
     }
@@ -85,12 +94,13 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
         if (! $post) {
             abort(404);
         }
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -103,19 +113,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         // VALIDATE
-        $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('posts')->ignore($id),
-                'max:255',
-            ],
-            'content' => 'required',
-            'category_id' => 'nullable|exists:categories,id'
-        ], [
-            'required' => 'The :attribute is required!!',
-            'unique' => 'The :attribute is already in use for another post.',
-            'max' => 'Max :max characters allowed for the :attribute.'
-        ]);
+        $this->performUpdateValidation($request, $id);
 
         $data = $request->all();
 
@@ -128,6 +126,14 @@ class PostController extends Controller
 
         $post->update($data); // fillable
 
+        // AGGIORNA RELATION TABELLA PIVOT
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+        }
+
         return redirect()->route('admin.posts.show', $post->id);
     }
 
@@ -139,6 +145,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // pulizioa orfani da tabella pivot
+        $post->tags()->detach();
+
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('deleted', $post->title);
@@ -153,11 +162,30 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|unique:posts|max:255',
             'content' => 'required',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
         ], [
             'required' => 'The :attribute is required!',
             'unique' => 'The :attribute is already in use, please change it!',
             'max' => 'Max :max characters allowed for the :attribute!'
+        ]);
+    }
+    
+    private function performUpdateValidation($request, $id)
+    {
+        $request->validate([
+            'title' => [
+                'required',
+                Rule::unique('posts')->ignore($id),
+                'max:255',
+            ],
+            'content' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
+        ], [
+            'required' => 'The :attribute is required!!',
+            'unique' => 'The :attribute is already in use for another post.',
+            'max' => 'Max :max characters allowed for the :attribute.'
         ]);
     }
 }

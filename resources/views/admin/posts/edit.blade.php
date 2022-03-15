@@ -63,6 +63,26 @@
                         @enderror
                     </div>
 
+                    <h4>Tags</h4>
+                    <div class="mb-3">
+                        @foreach ($tags as $tag)
+                            <span class="d-inline-block mr-3">
+                                <input type="checkbox" name="tags[]" id="tag-{{ $tag->id }}"
+                                    value="{{ $tag->id }}"
+                                    @if ( $errors->any() && in_array( $tag->id, old('tags') ) ) 
+                                        checked 
+                                    @elseif (! $errors->any() && $post->tags->contains($tag->id) )
+                                        checked
+                                    @endif
+                                >
+                                <label for="tag-{{ $tag->id }}">{{ $tag->name }}</label>
+                            </span>
+                        @endforeach
+                        @error('tags')
+                            <div class="feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <button class="btn btn-primary" type="submit">Update post</button>
                 </form>
             </div>
