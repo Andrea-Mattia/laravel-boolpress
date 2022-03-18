@@ -63,6 +63,7 @@ class PostController extends Controller
         $new_post->fill($data);
         $new_post->save();
 
+
         // SALVA RELAZIONE CON TAGS IN TABELLA PIVOT
         if (array_key_exists('tags', $data)) {
             // post - tag

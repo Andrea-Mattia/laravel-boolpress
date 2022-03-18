@@ -19,6 +19,7 @@
                     <th>Title</th>
                     <th>Category</th>
                     <th>Tags</th>
+                    <th>Created at</th>
                     <th colspan="3">Actions</th>
                 </tr>
             </thead>
@@ -38,6 +39,10 @@
                             @else
                                 No Tags
                             @endif
+                        </td>
+                        <td>
+                            <div>{{ $post->created_at->format('l, d/m/y') }}</div>
+                            <div>{{ $post->created_at->diffForHumans() }}</div>
                         </td>
                         <td>
                             <a class="btn btn-primary" 
