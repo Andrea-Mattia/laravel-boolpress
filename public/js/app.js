@@ -3633,7 +3633,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "excerpt" }, [
                   _vm._v(
-                    "\n                    Excerpt goes here\n                "
+                    "\n                    " +
+                      _vm._s(post.excerpt) +
+                      "\n                "
                   )
                 ]),
                 _vm._v(" "),

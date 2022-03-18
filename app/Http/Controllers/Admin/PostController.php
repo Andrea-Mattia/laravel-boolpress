@@ -54,6 +54,9 @@ class PostController extends Controller
 
         // gen slug
         $data['slug'] = Str::slug($data['title'], '-');
+        
+        // Gen excerpt
+        $data['excerpt'] = Str::limit($data['content'], 50);
 
         // create and save record on db
         $new_post = new Post();
@@ -122,6 +125,11 @@ class PostController extends Controller
         // gen slug
         if ($data['title'] != $post->title) {
             $data['slug'] = Str::slug($data['title'], '-');
+        }
+        
+        // gen excerpt
+        if ($data['content'] != $post->content) {
+            $data['excerpt'] = Str::limit($data['content'], 50);
         }
 
         $post->update($data); // fillable

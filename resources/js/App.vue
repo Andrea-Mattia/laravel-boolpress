@@ -10,7 +10,7 @@
                 <article v-for="post in posts" :key="post.id">
                     <h2>{{ post.title }}</h2>
                     <div class="excerpt">
-                        Excerpt goes here
+                        {{ post.excerpt }}
                     </div>
                     <div>{{ post.created_at }}</div>
                     <!-- Go to detail page -->
