@@ -8,9 +8,13 @@
             <div class="excerpt">
                 {{ post.excerpt }}
             </div>
-            <div>{{ formatDate(post.created_at) }}</div>
+            <div class="date">{{ formatDate(post.created_at) }}</div>
             <!-- Go to detail page -->
-            <a href="">Read more</a>
+            <router-link
+                :to="{ name: 'post-detail', params: { slug: post.slug } }"
+            >
+                Read more
+            </router-link>
         </article>
 
         <section class="navigation">
@@ -90,4 +94,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.date,
+.navigation {
+    margin: 1rem 0;
+}
+</style>
