@@ -20,7 +20,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+                <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 
@@ -80,6 +80,22 @@
                         @endforeach
                         @error('tags')
                             <div class="feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- POST IMAGE --}}
+                    <div class="mb-3">
+                        <label for="cover" class="form-label">Post Image</label>
+
+                        @if ($post->cover)
+                            <div class="mb-3">
+                                <img width="200" src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                            </div>
+                        @endif
+
+                        <input type="file" name="cover" id="cover" class="form-control-file">
+                        @error('cover')
+                            <div class="feedbak">{{ $message }}</div>
                         @enderror
                     </div>
 

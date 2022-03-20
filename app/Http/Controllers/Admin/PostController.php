@@ -132,6 +132,17 @@ class PostController extends Controller
 
         $post = Post::find($id);
 
+        // Image update
+        if (array_key_exists('cover', $data)) {
+            // delete previous image
+            if ($post->cover) {
+                Storage::delete($post->cover);
+            }
+
+            // set new image
+            $data['cover'] = Storage::put('posts-cover', $data['cover']);
+        }
+
         // gen slug
         if ($data['title'] != $post->title) {
             $data['slug'] = Str::slug($data['title'], '-');
@@ -201,6 +212,7 @@ class PostController extends Controller
             'content' => 'required',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'nullable|exists:tags,id',
+            'cover' => 'nullable|image'
         ], [
             'required' => 'The :attribute is required!!',
             'unique' => 'The :attribute is already in use for another post.',
