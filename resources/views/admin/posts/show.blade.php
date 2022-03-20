@@ -15,8 +15,20 @@
             @endif
         </div>
 
-        <div class="mb-5">
-            {{ $post->content }}
+        {{-- POST IMAGE --}}
+        <div class="mb-5 row">
+
+            <div class="col-md-6">
+                @if ($post->cover)
+                    <img class="img-fluid" src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                @else
+                    <img class="img-fluid" src="{{ asset('img/no-image.png') }}" alt="no-image">
+                @endif 
+            </div>
+            
+            <div class="{{ $post->cover == null ? 'col' : 'col-md-6' }}">
+                {{ $post->content }}
+            </div>
         </div>
 
         {{-- POST TAGS --}}
