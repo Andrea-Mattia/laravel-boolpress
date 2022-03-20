@@ -173,6 +173,7 @@ class PostController extends Controller
             'content' => 'required',
             'category_id' => 'nullable|exists:categories,id',
             'tags' => 'nullable|exists:tags,id',
+            'cover' => 'nullable|image'
         ], [
             'required' => 'The :attribute is required!',
             'unique' => 'The :attribute is already in use, please change it!',
