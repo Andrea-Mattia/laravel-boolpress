@@ -174,6 +174,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // Rimozione dell'eventuale immagine associata al post
+        if ($post->cover) {
+            Storage::delete($post->cover);
+        }
+
         // pulizioa orfani da tabella pivot
         $post->tags()->detach();
 
