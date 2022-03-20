@@ -2589,6 +2589,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2710,7 +2715,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".content[data-v-ed1cf24c] {\n  margin: 1rem 0;\n}", ""]);
+exports.push([module.i, ".post-body[data-v-ed1cf24c] {\n  display: flex;\n  justify-content: center;\n  margin: 2rem auto;\n}\n.post-body .content[data-v-ed1cf24c] {\n  margin: 1rem;\n}", ""]);
 
 // exports
 
@@ -4356,8 +4361,14 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "content" }, [
-                _vm._v(_vm._s(_vm.post.content))
+              _c("div", { staticClass: "post-body" }, [
+                _c("img", {
+                  attrs: { src: _vm.post.cover, alt: _vm.post.title }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "content" }, [
+                  _vm._v(_vm._s(_vm.post.content))
+                ])
               ]),
               _vm._v(" "),
               _c("router-link", { attrs: { to: { name: "blog" } } }, [

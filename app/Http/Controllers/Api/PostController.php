@@ -21,9 +21,15 @@ class PostController extends Controller
     public function show($slug) {
 
         // Get posts
-        // $posts = Post::all();
 
         $post = Post::where('slug', $slug)->with(['category', 'tags'])->first();
+
+        // modifica path cover image de associata
+        if ($post->cover) {
+            $post->cover = url('storage/' . $post->cover);
+        } else {
+            $post->cover = url('img/no-image.png');
+        }
 
         return response()->json($post);
     }

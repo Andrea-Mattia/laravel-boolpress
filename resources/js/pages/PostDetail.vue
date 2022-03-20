@@ -9,7 +9,12 @@
                 <Tags :tags="post.tags" />
             </div>
 
-            <div class="content">{{ post.content }}</div>
+            <!-- Aggiunta cover image -->
+            <div class="post-body">
+                <img :src="post.cover" :alt="post.title" />
+
+                <div class="content">{{ post.content }}</div>
+            </div>
 
             <router-link :to="{ name: 'blog' }">Back to posts list</router-link>
         </div>
@@ -56,7 +61,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-    margin: 1rem 0;
+.post-body {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+    .content {
+        margin: 1rem;
+    }
 }
 </style>
