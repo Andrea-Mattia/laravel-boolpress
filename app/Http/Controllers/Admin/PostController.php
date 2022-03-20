@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\Category;
 use App\Tag;
@@ -51,6 +52,14 @@ class PostController extends Controller
         $this->performValidation($request);
 
         $data = $request->all();
+
+        // add cover image (if exists)
+        if (array_key_exists('cover', $data)) {
+            $img_path = Storage::put('posts-cover', $data['cover']);
+
+            // override cover file with path
+            $data['cover'] = $img_path;
+        }
 
         // gen slug
         $data['slug'] = Str::slug($data['title'], '-');
