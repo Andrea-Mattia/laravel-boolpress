@@ -2594,6 +2594,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2715,7 +2717,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".post-body[data-v-ed1cf24c] {\n  display: flex;\n  justify-content: center;\n  margin: 2rem auto;\n}\n.post-body .content[data-v-ed1cf24c] {\n  margin: 1rem;\n}", ""]);
+exports.push([module.i, ".post-body[data-v-ed1cf24c] {\n  display: flex;\n  justify-content: center;\n  margin: 2rem auto;\n}\n.post-body .post-cover[data-v-ed1cf24c] {\n  flex-basis: 49%;\n}\n.post-body .post-cover img[data-v-ed1cf24c] {\n  max-width: 100%;\n  height: auto;\n}\n.post-body .content[data-v-ed1cf24c] {\n  flex-basis: 49%;\n  margin: 0 2%;\n}", ""]);
 
 // exports
 
@@ -4362,9 +4364,11 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "post-body" }, [
-                _c("img", {
-                  attrs: { src: _vm.post.cover, alt: _vm.post.title }
-                }),
+                _c("div", { staticClass: "post-cover" }, [
+                  _c("img", {
+                    attrs: { src: _vm.post.cover, alt: _vm.post.title }
+                  })
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "content" }, [
                   _vm._v(_vm._s(_vm.post.content))

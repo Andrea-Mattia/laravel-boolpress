@@ -11,7 +11,9 @@
 
             <!-- Aggiunta cover image -->
             <div class="post-body">
-                <img :src="post.cover" :alt="post.title" />
+                <div class="post-cover">
+                    <img :src="post.cover" :alt="post.title" />
+                </div>
 
                 <div class="content">{{ post.content }}</div>
             </div>
@@ -65,8 +67,16 @@ export default {
     display: flex;
     justify-content: center;
     margin: 2rem auto;
+    .post-cover {
+        flex-basis: 49%;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
     .content {
-        margin: 1rem;
+        flex-basis: 49%;
+        margin: 0 2%;
     }
 }
 </style>
