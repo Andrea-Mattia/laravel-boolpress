@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index() {
 
         // Mail
-        Mail::to(Auth::user()->email)->send(new SendNewMail());
+        // Mail::to(Auth::user()->email)->send(new SendNewMail());
 
         return view('admin.home');
     }
