@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Contact;
+use App\Mail\ContactMessage;
 
 class ContactController extends Controller
 {
@@ -26,8 +29,12 @@ class ContactController extends Controller
         $data = $request->all();
 
         // Save on db
+        $new_contact = new Contact();
+        $new_contact->fill($data);
+        $new_contact->save();
 
-        // Send email
+        // Send email to administrator
+        Mail::to('admin@site.com')->send(new ContactMessage($data));
 
         return response()->json($data);
     }
